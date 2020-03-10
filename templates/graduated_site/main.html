@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Internship Post
+{% endblock %}
+{% block upper_context %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+{% endblock %}
+{% block context %}
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <form class="form-group" action="{% url 'home' %}">
+                    <div class="col-lg-4">
+                        {% for field in form %}
+                            <div class="form-row">
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <input class="pull-right btn btn-sm btn-success" type="submit" value="Query">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% for post in internship_posts %}
+            <p><h2><a href="{% url 'post-detail' post.slug %}">{{ post.title|upper }}
+        </a>{{ post.get_ad_type_html|safe }}<small
+                class="pull-right glyphicon glyphicon-time">{{ post.created_date }}</small></h2>
+        </h2>
+            </p>
+            <br>
+            <p style="font-size: large">{{ post.content|linebreaksbr|truncatechars:200 }}
+                {% if post.get_image %}
+                    <br>
+                    <br>
+                    <img class="img-responsive" src="{{ post.get_image }}">
+                    <br>
+                {% endif %}
+            </p>
+            <h4><b class="text-success">User Who Posted - <a href="{% url 'user-profile' post.user.username %}">{{ post.user.get_full_name }}</a></b></h4>
+            <h4><b class="text-danger">Company Who Posted - {{ post.company }}</b> </h4>
+            <h3 class="page-header pull-right text-danger"><b>{{ post.deadline }}</b></h3>
+            </p>
+            <br>
+            <br>
+            <br>
+            <br>
+        {% endfor %}
+        <div class="row">
+            <div class="col-lg-10">
+                {% if internship_posts.has_other_pages %}
+                    <ul class="pagination">
+                        {% if internship_posts.has_previous %}
+                            <li><a href="?page=
+                                    {{ internship_posts.previous_page_number }}{% if request.GET.adv_type_search %}&adv_type_search={{ request.GET.adv_type_search }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">&laquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in internship_posts.paginator.page_range %}
+                            {% if internship_posts.number == i %}
+                                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}{% if request.GET.adv_type_search %}&adv_type_search={{ request.GET.adv_type_search }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if internship_posts.has_next %}
+                            <li><a href="?page={{ internship_posts.next_page_number }}{% if request.GET.adv_type_search %}&adv_type_search={{ request.GET.adv_type_search }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">&raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

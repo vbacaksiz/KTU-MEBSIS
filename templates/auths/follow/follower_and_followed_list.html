@@ -1,0 +1,19 @@
+<div class="row">
+    {% for row in follow %}
+        <div class="col-lg-12">
+            {% if follow_type == 'follower' %}
+                <p></p>
+                <img class="img-circle" style="width: 70px" src="{{ row.followed.userprofile.get_profile_photo }}">
+                <b style="padding-left: 15px"><a href="{% url 'user-profile' row.followed.username %}">{{ row.followed.get_full_name }}</a></b>
+            {% elif follow_type == 'followed' %}
+                <p></p>
+                <img class="img-circle" style="width: 70px" src="{{ row.follower.userprofile.get_profile_photo }}">
+                <b><a href="{% url 'user-profile' row.follower.username %}">{{ row.follower.get_full_name }}</a></b>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p class="lead text-center text-danger">
+            No results were found.
+        </p>
+    {% endfor %}
+</div>

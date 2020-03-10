@@ -1,0 +1,26 @@
+{% extends 'auths/user_profile_base.html' %}
+
+{% block profile_content %}
+    <div class="col-lg-6">
+        <h3><b>About Me</b></h3>
+        <p class="page-header">{{ user.userprofile.bio }}</p>
+        <h3><b>My Workspaces</b></h3>
+        <p class="page-header">{{ user.userprofile.working_area }}</p>
+        <h3><b>My Working Position</b></h3>
+        <p class="page-header">{{ user.userprofile.working_position }}</p>
+        <h3><b>Foreign Languages</b></h3>
+        <p class="page-header">{{ user.userprofile.foreign_language }}</p>
+        <h3><b>My Education</b></h3>
+        <p class="page-header">{{ user.userprofile.education }}</p>
+        <h3><b>My certificate</b></h3>
+        <p class="page-header">{{ user.userprofile.education }}</p>
+        <h3><b>My birthday</b></h3>
+        <p class="page-header">{{ user.userprofile.birth_date }}</p>
+        <h3><b>Graduation Year</b></h3>
+        <p class="page-header">{{ user.userprofile.graduated_date }}</p>
+        <h3><b>The Company I Used To Work With</b></h3>
+        <p class="page-header">{{ user.userprofile.company }}</p>
+        <h3><b>The Range I Work</b></h3>
+        <p class="page-header">{{ user.userprofile.first_day }} - {{ user.userprofile.last_day }}</p>
+    </div>
+{% endblock %}

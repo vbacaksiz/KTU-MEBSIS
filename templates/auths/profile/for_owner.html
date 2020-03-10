@@ -1,0 +1,10 @@
+<ul class="nav nav-pills">
+    <li role="presentation" class="{% if page == 'user_profile' %}active{% endif %}"><a
+            href="{% url 'user-profile' user.username %}">Posts</a></li>
+    <li role="presentation" class="{% if page == 'about_user' %}active{% endif %}"><a
+            href="{% url 'about-user' user.username %}">About Me</a></li>
+    <li role="presentation" class="{% if page == 'profile_update' %}active{% endif %}"><a
+            href="{% url 'user-update' %}">Update Your Information</a></li>
+    <li role="presentation" class="{% if page == 'work_company' %}active{% endif %}"><a href="{% url 'work-company' %}">My
+        Company Information</a></li>
+</ul>

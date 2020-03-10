@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Internship Post
+{% endblock %}
+{% block upper_context %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+
+{% endblock %}
+{% block context %}
+    <div style="margin:0 auto;width: 505px">
+        <h1 class="page-header">{% if request.user == internship_post.user %}
+            <a href="{% url 'post-update' internship_post.slug %}"> <small class="pull-right"><span
+                    class="glyphicon glyphicon-repeat"></span>Post Update</small></a>{% endif %}<a
+                href="{% url 'home' %}">
+            <small class="glyphicon glyphicon-circle-arrow-left"></small></a>
+            {{ internship_post.title|upper }}{{ internship_post.get_ad_type_html|safe }}</h1>
+        <p class="lead">
+            {{ internship_post.content|linebreaksbr }}
+        </p>
+        {% if internship_post.get_image %}
+            <img class="img-responsive" src="{{ internship_post.get_image }}">
+            <br>
+        {% endif %}
+        {% if internship_post.working_area != '' %}
+            <p class="lead text-warning">
+                Workspaces Sought
+            </p>
+            <p class="lead">
+                -{{ internship_post.working_area.all|join:'<br>-' }}
+            </p>
+            <br>
+            <br>
+        {% endif %}
+        {% if internship_post.time_internship != None %}
+            <h4><b class="text-info">Internship Duration = {{ internship_post.time_internship }}</b></h4>
+            <h4><b class="text-info">Internship Period   = {{ internship_post.period_internship }}</b></h4>
+        {% endif %}
+        <h4><b class="text-success">User Who Posted - <a
+                href="{% url 'user-profile' internship_post.user.username %}">{{ internship_post.user.get_full_name }}</a></b>
+        </h4>
+        <h4><b class="text-danger">Company Who Posted - {{ internship_post.company }}</b>
+            <h3><small
+                    class="pull-left glyphicon glyphicon-time">{{ internship_post.created_date }}</small></h3>
+            <h5><b class="text-danger pull-right">{{ internship_post.deadline }}</b></h5>
+            <br>
+            {% if request.user == internship_post.user %}
+                <a href={% url 'post-delete' internship_post.slug %}><input type="submit" value="Delete"
+                                                                            class="pull-right btn-md btn-danger"></a>{% endif %}
+    </div>
+    <div class="row1 col-lg-4 col-lg-offset-4">
+        <h2 class="page-header">Comments ({{ internship_post.get_post_comment|length }})</h2>
+        {% for comment in internship_post.get_post_comment %}
+            <div>
+                <span style="font-weight: bold">{{ comment.get_screen_name }}</span>
+                <span class="pull-right" style="font-weight: bold"><span
+                        class="glyphicon glyphicon-time"></span>{{ comment.comment_date|timesince }} Before </span>
+            </div>
+            <p style="padding: 10px; padding-left: 10px">
+                {{ comment.content }}
+            </p>
+        {% endfor %}
+    </div>
+    <div class="row1 col-lg-4 col-lg-offset-4">
+        <h2 class="page-header">Add Comment</h2>
+        <div class="col-lg-12">
+            <form action="{% url 'add-comment' internship_post.slug %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="row">
+                        <div>
+                            <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <b class="text-danger">{{ error }}</b>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <b class="text-success">{{ field.help_text }}</b>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <input type="submit" value="Comment" class="pull-right btn btn-sm btn-success">
+            </form>
+        </div>
+    </div>
+{% endblock %}

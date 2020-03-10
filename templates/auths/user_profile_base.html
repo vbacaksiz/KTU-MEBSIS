@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+
+{% block upper_context %}
+    <script type="text/javascript" rel="script">
+        $(document).ready(function () {
+            $("#n_follow_button").on('click', '.follow_show_button',function () {
+                var $this = $(this);
+                var $url = $this.attr('url');
+                var $username = $this.attr('username');
+                var $follow_type = $this.attr("follow_type");
+                var $modal = $("#profile_following_modal");
+                if($follow_type == "follower")
+                    $modal.find('.modal-title').html("Follower")
+                else if($follow_type == "followed")
+                    $modal.find('.modal-title').html("Followed")
+
+
+                $.ajax({
+                    url: $url,
+                    method: "GET",
+                    dataType: 'json',
+                    data:{'username':$username},
+                    success:function (data) {
+                        $modal.find('.modal-body').html(data.html);
+                        $modal.modal('show');
+                    }
+                })
+            })
+            $("#follow_button").click(function () {
+                var $this = $(this);
+                var $url = $this.attr('url');
+                var $follower_button = $this.attr('follower_button');
+                var $followed_button = $this.attr('followed_button');
+
+                var data = {follower_username: $follower_button, followed_username: $followed_button};
+
+
+                $.ajax({
+                    url: $url,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: data,
+                    success: function (data) {
+                        if (data.is_valid) {
+                            $this.html(data.msg)
+                            $("#n_follow_button").html(data.html)
+                        }
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}
+
+{% block context %}
+    {% csrf_token %}
+    <div class="col-lg-2 col-md-2 col-xs-2 col-sm-2" style="margin-top: 50px">
+        <img style="margin-left: 100px" class="img-circle img-responsive"
+             src="{{ user.userprofile.get_profile_photo }}">
+    {% include 'auths/follow/following_modal.html' %}
+        {% if request.user != user %}
+            <br>
+            <button followed_button='{{ user.username }}' follower_button='{{ request.user.username }}'
+                    url="{% url 'follow-system' %}"
+                    id="follow_button" style="font-size: medium; width: 150px; height: 42px"
+                    class="col-lg-offset-7 col-md-offset-7 col-sm-offset-7 col-xs-offset-7 btn btn-primary">
+                {% if is_follow %}
+                    <b>Unfollow</b>
+                {% else %}
+                    <b>Follow</b>
+                {% endif %}
+            </button>
+        {% endif %}
+        <br>
+        <br>
+        <div id="n_follow_button" class="row">
+            {% include 'auths/profile/n_follow_include.html' %}
+        </div>
+    </div>
+    <div class="col-lg-5 col-lg-offset-2 col-md-5 col-md-offset-2 col-sm-5 col-sm-offset-2 col-xs-5 col-xs-offset-2" style="margin-top: 20px">
+        <h1><b>{{ user.userprofile.get_screen_name }}</b></h1>
+        <h4><b>@{{ user.username }}</b></h4>
+        <br>
+        {% if request.user == user %}
+            {% include 'auths/profile/for_owner.html' %}
+        {% else %}
+            {% include 'auths/profile/for_visitor.html' %}
+        {% endif %}
+        <div>
+            {% block profile_content %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% include 'auths/user_profile_base.html' %}
+
+{% block profile_content %}
+    <div class="row1">
+        <div class="col-lg-offset-2 col-lg-5 form-group">
+            <div class="col-lg-12">
+                <form method="POST" action="{% url 'work-company' %}">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <br>
+                        <p><label class="control-label">{{ field.label }}</label>
+                            {% if field.label == 'The Company You Work With' %}
+                                <b><a href="{% url 'add-company' %}" class="pull-right glyphicon glyphicon-plus">Add
+                                    Company</a></b>
+                            {% endif %}
+                        </p>
+                        <p>{{ field }}</p>
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <b class="text-danger">{{ error }}</b>
+                            {% endfor %}
+                        {% else %}
+                            {% if field.help_text %}
+                                <b class="text-success">{{ field.help_text }}</b>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <br>
+                    <br>
+                    <input type="submit" class="pull-right btn btn-sm btn-success" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

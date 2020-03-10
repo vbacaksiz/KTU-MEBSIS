@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Mesaj Kutusu
+{% endblock %}
+
+{% block context %}
+    {% if n_message == True %}
+        <div class="row">
+            <div class="col-lg-7 col-sm-offset-3">
+                <div class="col-lg-6 col-lg-offset-2">
+                    <h1 class="text-danger"><b>{{ message_title }}</b></h1>
+                    <b style="font-size: large"> {{ message }}</b>
+                    <p></p>
+                    <h4 class="text-success"><b>Sender {{ message_user.get_full_name }}</b></h4>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-lg-7 col-sm-offset-3">
+                <div class="col-lg-6 col-lg-offset-2">
+                    <h1 class="text-danger"><b>There is no message.</b></h1>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-7 col-sm-offset-3">
+            <form method="POST" action="{% url 'message-box-send' user.username %}">
+                {% csrf_token %}
+                {% include 'form_include.html' %}
+                <input type="submit" class="col-lg-offset-7 btn btn-success btn-sm" value="Send">
+            </form>
+        </div>
+    </div>
+{% endblock %}

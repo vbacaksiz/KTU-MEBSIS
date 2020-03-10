@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Post Update
+{% endblock %}
+
+{% block upper_context %}
+    <div class="row" style="margin-top: 15px">
+        <div class="col-lg-4 col-lg-offset-4">
+            <h1 class="page-header"><a href="{% url 'post-detail' form.instance.slug %}"><small
+                    class="glyphicon glyphicon-circle-arrow-left"></small></a>Post Update</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block context %}
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+            <form action="{% url 'post-update' form.instance.slug %}" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {% include 'form_include.html' %}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <input type="submit" value="Update" class="pull-right btn-md btn-success"
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

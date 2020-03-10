@@ -1,0 +1,12 @@
+body{
+    background-color: #1f292e;
+}
+
+.pull-center{
+    float: none;
+    margin-left: 50px ;
+}
+
+.user-profile-img{
+    width: 50px;
+}

@@ -1,0 +1,38 @@
+{% extends 'auths_base.html' %}
+{% block title %}
+    Register
+{% endblock %}
+
+{% block context %}
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+        <h1 class="page-header"><b>Sign Up</b></h1>
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-6 col-lg-offset-2 col-md-6 col-md-offset-2 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+                                <label class="control-label">{{ field.label }}</label>
+                                {{ field }}<p>
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <b class="text-danger">{{ error }}</b>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <b class="text-success">{{ field.help_text }}</b>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row col-lg-offset-2">
+                    <input type="submit" class="btn btn-sm btn-success" value="Sign Up">
+                    <span><b>If you have an account, <a href="{% url 'user-login' %}">click to login.</a>.</b></span>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

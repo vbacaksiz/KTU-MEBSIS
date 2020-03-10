@@ -1,0 +1,67 @@
+{% extends 'auths/user_profile_base.html' %}
+{% load static %}
+
+{% block upper_context %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
+            integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'bootstrap-datetimepicker/bootstrap-datetimepicker.min.css' %}">
+    <script type="text/javascript" rel="script"
+            src="{% static 'bootstrap-datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datetimepicker1').datetimepicker({
+                format: "DD.MM.YYYY"
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block profile_content %}
+    <h2 class="page-header">Update Profile</h2>
+    <form method="post" enctype="multipart/form-data" action="{% url 'user-update' %}">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if field.label == 'Date of Birth' %}
+                <div class="row">
+                <div class='col-sm-6'>
+                    <div class="form-group">
+                    <label class="control-label">{{ field.label }}</label>
+                        <div class='input-group date' id='datetimepicker1'>
+                            {{ field }}
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <b class="text-danger">{{ error }}</b>
+                                {% endfor %}
+                            {% else %}
+                                {% if field.help_text %}
+                                    <b class="text-success">{{ field.help_text }}</b>
+                                {% endif %}
+                            {% endif %}
+                            <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <label class="control-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <b class="text-danger">{{ error }}</b>
+                        {% endfor %}
+                    {% else %}
+                        {% if field.help_text %}
+                            <b class="text-success">{{ field.help_text }}</b>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <br>
+        <input type="submit" value="Update" class="pull-right btn btn-success btn-sm">
+    </form>
+{% endblock %}

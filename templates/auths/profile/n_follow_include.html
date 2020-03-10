@@ -1,0 +1,12 @@
+<div class="follower col-lg-2 col-lg-offset-4 col-md-2 col-md-offset-4 col-sm-2 col-sm-offset-4 col-xs-2 col-xs-offset-4 text-center">
+    <span><b class="col-lg-offset-12 col-md-offset-12 col-xs-offset-12 col-sm-offset-12">Followed</b></span>
+    <button url="{% url 'follower-and-followed-list' 'follower' %}" follow_type="followed" username="{{ user.username }}" class="follow_show_button btn-block btn btn-primary" style="width: 100px; height: 35px">
+        <b>{{ follower }}</b>
+    </button>
+</div>
+<div class="followed col-lg-2 col-lg-offset-4 col-md-2 col-md-offset-4 col-sm-2 col-sm-offset-4 col-xs-2 col-xs-offset-4 text-center">
+    <span><b class="col-lg-offset-12 col-md-offset-12 col-xs-offset-12 col-sm-offset-12">Follower</b></span>
+    <button url="{% url 'follower-and-followed-list' 'followed' %}" follow_type="follower" username="{{ user.username }}" class="follow_show_button btn-block btn btn-danger" style="width: 100px; height: 35px">
+        <b>{{ followed }}</b>
+    </button>
+</div>

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}
+    KTÜ Bilgisayar Mühendisliği - Mezunlar Anketi
+{% endblock %}
+
+
+{% block context %}
+    {% if is_survey != True %}
+        <div class="col-lg-4 col-lg-offset-4">
+            <h1 class="page-header">KTÜ Bilgisayar Mühendisliği - Mezunlar Anketi</h1>
+            İletişim Bilgileriniz
+            İletişim bilgileri sadece mezunlarımızın nerede ne yaptığını bilmek ve gerektiğinde kendileriyle iletişim
+            kurmak
+            içindir. İsimlerle ilgili bir değerlendirme kesinlikle yapılmayacaktır.
+            <b class="text-danger">* Gerekli </b>
+        </div>
+        <div class="col-lg-6 col-lg-offset-3">
+            <form method="get" action="{% url 'survey' %}">
+                {% for field in form %}
+                    <p></p>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-6 col-lg-offset-2">
+                                <p></p>
+                                <label for="{{ field.id_for_label }}" class="control-label">{{ field.label }}</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-lg-offset-2">
+                            {{ field }}
+                            <br>
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <span class="text-danger"><b> {{ error }} </b></span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <br>
+                <br>
+                <input type="submit" value="Save" class="col-lg-offset-9 btn-success btn-md">
+            </form>
+        </div>
+    {% else %}
+        <div class="col-lg-7 col-lg-offset-5">
+            <h1 class="text-danger"><b>No Survey Found</b></h1>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'auths_base.html' %}
+{% block title %}
+    Login
+{% endblock %}
+
+{% block context %}
+    <div class="row" style="margin-top: 50px">
+        <div class="col-lg-6 col-lg-offset-3">
+        <h1 class="page-header"><b>Login</b></h1>
+        <br>
+        <br>
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="col-lg-6 col-lg-offset-2 alert alert-dismissable alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ error|safe }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="post" action="{% url 'user-login' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-6 col-lg-offset-2 col-md-6 col-md-offset-2 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
+                                <label class="control-label">{{ field.label }}</label>
+                                {{ field }}<p>
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <b class="text-danger">{{ error }}</b>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <b class="text-success">{{ field.help_text }}</b>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row col-lg-offset-2">
+                    <input type="submit" class="btn btn-sm btn-success" value="Login">
+                    <span><b>if you do not have an account, <a
+                            href="{% url 'register' %}">click to register </a>.</b></span>
+                </div>
+            </form>
+            </div>
+        </div>
+{% endblock %}
