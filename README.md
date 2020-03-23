@@ -1,2 +1,2 @@
 # KTU-MEBSIS
-Website for KTU(Karadeniz Technical University) graduates
+&nbsp;&nbsp;&nbsp;&nbsp;Developed a website for graduates of Karadeniz Technical University.
